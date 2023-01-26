@@ -3,8 +3,8 @@ set -euo pipefail
 
 if ! command -v biey &> /dev/null
 then
-    ERR_MESSAGE="Bie CLI tool not installed, Please install the CLI in Buildkite agent first.\nFor more information-\nhttps://github.com/respond-io/buildkite-iac-executor"
-    ERR_MESSAGE_HTML="🔴 Bie CLI tool not installed, Please install the CLI in Buildkite agent first.<br>For more information check <a href=\"https://github.com/respond-io/buildkite-iac-executor#installation\">Installtion Guide</a>"
+    ERR_MESSAGE="Bie CLI tool not installed.\nPlease install the CLI in Buildkite agent first.\nFor more information-\nhttps://github.com/respond-io/buildkite-iac-executor"
+    ERR_MESSAGE_HTML="🔴 <b>Bie CLI tool not installed.</b><br>Please install the CLI in Buildkite agent first.<br>For more information check <a href=\"https://github.com/respond-io/buildkite-iac-executor#installation\">Installtion Guide</a>"
     buildkite-agent annotate "$ERR_MESSAGE_HTML"
     echo -e $ERR_MESSAGE
     exit 1
