@@ -1,6 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 
+if ! command -v bie &> /dev/null
+    echo "Bie command found"
+then
+    echo "Bie could not be found"
+fi
+
 PATTERN="$BUILDKITE_PLUGIN_BUILDKITE_FILE_COUNTER_PATTERN"
 
 echo "--- :1234: Counting the number of files"
