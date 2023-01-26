@@ -2,9 +2,10 @@
 set -euo pipefail
 
 if ! command -v bie &> /dev/null
-    echo "Bie command found"
 then
     echo "Bie could not be found"
+else
+    echo "Bie command found"
 fi
 
 PATTERN="$BUILDKITE_PLUGIN_BUILDKITE_FILE_COUNTER_PATTERN"
