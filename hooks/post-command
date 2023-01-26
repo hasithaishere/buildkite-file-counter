@@ -1,9 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
-if ! command -v bie &> /dev/null
+if ! command -v biey &> /dev/null
 then
-    echo "Bie could not be found"
+    echo -e "Bie CLI tool not installed, Please install the CLI in Buildkite agent first.\nFor more information-\nhttps://github.com/respond-io/buildkite-iac-executor",
+
 else
     echo "Bie command found"
 fi
