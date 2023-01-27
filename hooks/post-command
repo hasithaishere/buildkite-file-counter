@@ -32,4 +32,10 @@ echo "${TYPE} || ${NAME} || ${STACK} || ${PATH}"
 
 # buildkite-agent annotate "Found ${COUNT} files matching ${PATTERN}"
 
+whoami
+which bie
+which buildkite-agent
+
+bie help
+
 bie init-v2 -b $BUILDKITE_BUILD_NUMBER -o $BUILDKITE_ORGANIZATION_SLUG -p $BUILDKITE_PIPELINE_NAME --type $TYPE --name $NAME --stack $STACK --path $PATH --commitHash $CURRENT_COMMIT_HASH --successCommitHash $LATEST_SUCCESS_COMMIT_HASH | buildkite-agent pipeline upload
