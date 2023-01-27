@@ -12,18 +12,24 @@ else
     echo "Bie command found"
 fi
 
+CURRENT_COMMIT_HASH=$(git rev-parse HEAD)
+LATEST_SUCCESS_COMMIT_HASH=$(head -n 1 ~/last_successful_production_build)
+
 TYPE="$BUILDKITE_PLUGIN_BUILDKITE_FILE_COUNTER_TYPE"
 NAME="$BUILDKITE_PLUGIN_BUILDKITE_FILE_COUNTER_NAME"
 STACK="$BUILDKITE_PLUGIN_BUILDKITE_FILE_COUNTER_STACK"
+PATH="$BUILDKITE_PLUGIN_BUILDKITE_FILE_COUNTER_PATH"
 
-echo "${TYPE} || ${NAME} || ${STACK}"
+echo "${TYPE} || ${NAME} || ${STACK} || ${PATH}"
 
-PATTERN="$BUILDKITE_PLUGIN_BUILDKITE_FILE_COUNTER_PATTERN"
+# PATTERN="$BUILDKITE_PLUGIN_BUILDKITE_FILE_COUNTER_PATTERN"
 
-echo "--- :1234: Counting the number of files"
+# echo "--- :1234: Counting the number of files"
 
-COUNT=$(find . -name "$PATTERN" | wc -l)
+# COUNT=$(find . -name "$PATTERN" | wc -l)
 
-echo "Found ${COUNT} files matching ${PATTERN}"
+# echo "Found ${COUNT} files matching ${PATTERN}"
 
-buildkite-agent annotate "Found ${COUNT} files matching ${PATTERN}"
+# buildkite-agent annotate "Found ${COUNT} files matching ${PATTERN}"
+
+bie init-v2 -b $BUILDKITE_BUILD_NUMBER -o $BUILDKITE_ORGANIZATION_SLUG -p $BUILDKITE_PIPELINE_NAME --type $TYPE --name $NAME --stack $STACK --path $PATH --commitHash $CURRENT_COMMIT_HASH --successCommitHash $LATEST_SUCCESS_COMMIT_HASH | buildkite-agent pipeline upload
