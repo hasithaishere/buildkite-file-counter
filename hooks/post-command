@@ -31,7 +31,8 @@ echo "${TYPE} || ${NAME} || ${STACK} || ${PATH}"
 # echo "Found ${COUNT} files matching ${PATTERN}"
 
 # buildkite-agent annotate "Found ${COUNT} files matching ${PATTERN}"
-$(git rev-parse HEAD)
+RE=$(git rev-parse HEAD)
+echo "${RE}"
 git rev-parse HEAD
 
 whoami
