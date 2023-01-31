@@ -41,5 +41,36 @@ LATEST_SUCCESS_COMMIT_HASH=$(head -n 1 ~/last_successful_production_build)
 # which buildkite-agent
 
 #bie help
+
+# Constants
+STAGING_AWS_ACCOUNT_ID="123456789123" # For dummy testing my acc
+PRODUCTION_AWS_ACCOUNT_ID="987654321987"
+
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
+ENV=""
+SAM_DEPLOYMENT_BUCKET=""
+SAM_DEPLOYMENT_BUCKET_PREFIX=""
+
+if [ "$AWS_ACCOUNT_ID" == "$STAGING_AWS_ACCOUNT_ID" ]; then
+    ENV="staging"
+    SAM_DEPLOYMENT_BUCKET="staging--main-bucket"
+    SAM_DEPLOYMENT_BUCKET_PREFIX="staging"
+elif [ "$AWS_ACCOUNT_ID" == "$PRODUCTION_AWS_ACCOUNT_ID" ]; then    
+    ENV="production"
+    SAM_DEPLOYMENT_BUCKET="production--bucket"
+    SAM_DEPLOYMENT_BUCKET_PREFIX="production"
+else
+    echo "This AWS account ID unable to map with our environments."
+    exit 1
+fi
+
+echo "Environment :: $ENV"
+echo "SAM_DEPLOYMENT_BUCKET :: $SAM_DEPLOYMENT_BUCKET"
+
+# Export Variable
+export ENV=$ENV
+export SAM_DEPLOYMENT_BUCKET=$SAM_DEPLOYMENT_BUCKET
+export SAM_DEPLOYMENT_BUCKET_PREFIX=$SAM_DEPLOYMENT_BUCKET_PREFIX
+
 echo "bie init-service -b \"$BUILDKITE_BUILD_NUMBER\" -o \"$BUILDKITE_ORGANIZATION_SLUG\" -p \"$BUILDKITE_PIPELINE_NAME\" --type \"$BUILDKITE_PLUGIN_BUILDKITE_FILE_COUNTER_TYPE\" --name \"$BUILDKITE_PLUGIN_BUILDKITE_FILE_COUNTER_NAME\" --stack \"$BUILDKITE_PLUGIN_BUILDKITE_FILE_COUNTER_STACK\" --path \"$BUILDKITE_PLUGIN_BUILDKITE_FILE_COUNTER_PATH\" --commitHash \"$CURRENT_COMMIT_HASH\" --successCommitHash \"$LATEST_SUCCESS_COMMIT_HASH\" | buildkite-agent pipeline upload"
 bie init-service -b \"$BUILDKITE_BUILD_NUMBER\" -o \"$BUILDKITE_ORGANIZATION_SLUG\" -p \"$BUILDKITE_PIPELINE_NAME\" --type \"$BUILDKITE_PLUGIN_BUILDKITE_FILE_COUNTER_TYPE\" --name \"$BUILDKITE_PLUGIN_BUILDKITE_FILE_COUNTER_NAME\" --stack \"$BUILDKITE_PLUGIN_BUILDKITE_FILE_COUNTER_STACK\" --path \"$BUILDKITE_PLUGIN_BUILDKITE_FILE_COUNTER_PATH\" --commitHash \"$CURRENT_COMMIT_HASH\" --successCommitHash \"$LATEST_SUCCESS_COMMIT_HASH\" | buildkite-agent pipeline upload
